@@ -58,8 +58,9 @@ def get_available_moves(current_state: list[bool]) -> list[int]:
 
 
 def make_move(index: int, player: bool, current_state: list[bool]) -> bool:
-    current_state[index] = player
-    return current_state
+    new_state = current_state.copy()
+    new_state[index] = player
+    return new_state
 
 
 def draw_board(current_state):
@@ -72,34 +73,24 @@ def draw_board(current_state):
         print(plane[i : i + 3])
 
 
-def min_max(current_state: list[bool], move: int | None):
+def min_max(current_state: list[bool]):
     current_player = check_current_player(current_state)
 
-    if move:
-        current_state = make_move(move, current_player, current_state)
-    print("\n")
-    draw_board(current_state)
-    print(current_player)
-    print(move)
-
-    if (win_value := check_player_won(current_player, current_state)) is not None:
-        print(win_value)
+    if (win_value := check_player_won(not current_player, current_state)) is not None:
         return win_value
 
     available_moves = get_available_moves(current_state)
 
     next_states = []
     for move in available_moves:
-        next_states.append(min_max(current_state.copy(), move))
+        next_states.append(
+            min_max(make_move(move, current_player, current_state.copy()))
+        )
 
     if current_player:
         return max(next_states)
     else:
         return min(next_states)
-
-
-test_list = [False, True, False, None, True, True, None, False, True]
-print(min_max(test_list, None))
 
 
 def game_loop():
