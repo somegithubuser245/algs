@@ -65,7 +65,7 @@ def update_weigths(model_weights, delta_weights):
     return result
 
 def get_prediction(input, weights):
-    bias = weights[-1]
+    bias = weights[0]
     return 1 if (sum([input[i] * weights[i] for i in range(ARR_LENGTH)]) + bias) >= 0 else 0
 
 def debug_weights(weights, msg):
@@ -74,7 +74,7 @@ def debug_weights(weights, msg):
         start = i*5
         print(weights[start:start+5])
 
-    print(f"Bias: {weights[-1]}")
+    print(f"Bias: {weights[0]}")
     
 
 
@@ -136,6 +136,6 @@ one = [
     1, 0, 0, 0, 0,
 ]
 
-print(get_prediction(seven, weights))
+print(get_prediction(rand_three, weights))
         
 
